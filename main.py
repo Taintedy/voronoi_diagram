@@ -3,6 +3,8 @@ from delaunay import delaunay
 from points import point
 from voronoi import voronoi_graph
 from pygame.locals import *
+import numpy
+import random
 
 FPS = 144
 WIN_WIDTH = 1500
@@ -14,13 +16,13 @@ PURPLE = (75, 0, 130)
 MAGENTA = (255, 0, 255)
 BLACK = (0, 0, 0)
 pygame.init()
-
-clock = pygame.time.Clock()
 points = []
-
+for i in range(0, 10):
+    points.append(point(1000,500-i*20 ))
+    points.append(point(500-i*20,750))
+    #points.append(point(numpy.random.normal(1500 / 2, 100), numpy.random.normal(1000 / 2, 100)))
+clock = pygame.time.Clock()
 sc = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
-
-points.sort(key=lambda p: p.x)
 
 while 1:
     sc.fill(BLACK)
@@ -33,26 +35,15 @@ while 1:
             if pygame.mouse.get_pressed()[0] == 1:
                 tempMousePos = pygame.mouse.get_pos()
                 points.append(point(tempMousePos[0], tempMousePos[1]))
-                for l in range(0, len(points)):
-                    for j in range(l + 1, len(points)):
-                        if points[l].theSame(points[j]):
-                            points.remove(points[j])
-                for l in range(0, len(points) - 1):
-                    for j in range(0, len(points) - 1):
-                        if points[j + 1].x < points[j].x:
-                            temp = points[j]
-                            points[j] = points[j + 1]
-                            points[j + 1] = temp
         if i.type == pygame.KEYDOWN:
             if pygame.key.get_pressed()[K_SPACE]:
                 points = []
-
     if len(points) != 0:
         delaun = delaunay(points, sc)
-        graph = voronoi_graph(delaun.triangulate(points))
+        graph = voronoi_graph(delaun.triangulate())
         voron_edge = graph.vg_build()
         for e in voron_edge:
             delaun.drawEdge(e)
-        #print()
+        # print()
     pygame.display.update()
     clock.tick(FPS)

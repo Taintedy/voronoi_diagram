@@ -1,5 +1,6 @@
 import numpy
 import points
+import pygame
 
 class triangle:
     PURPLE = (75, 0, 130)
@@ -13,11 +14,18 @@ class triangle:
         self.sc = sc
         self.isBad = 0
         self.cirCoords = self.voronoi_point()
+        self.radius = self.dist(self.point1,self.cirCoords.x,self.cirCoords.y)
 
     def dist(self, p, cirX, cirY):
         return numpy.sqrt((cirX - p.x) * (cirX - p.x) + (cirY - p.y) * (cirY - p.y))
 
     def circumcircleContains(self, p):
+        # GREEN = (0, 255, 0)
+        # pygame.draw.circle(self.sc, GREEN, (int(self.cirCoords.x), int(self.cirCoords.y)), int(self.radius), 1)
+        # pygame.display.update()
+        # pygame.time.delay(500)
+        if self.cirCoords == 1:
+            return 1
         cirRadius = self.dist(self.point1, self.cirCoords.x, self.cirCoords.y)
         if cirRadius <= self.dist(p, self.cirCoords.x, self.cirCoords.y):
             return 0
@@ -36,7 +44,10 @@ class triangle:
         y1 = (self.point1.y + self.point2.y) / 2
         y2 = (self.point2.y + self.point3.y) / 2
         if ((self.point2.y - self.point1.y) == 0) | ((self.point3.y - self.point2.y) == 0):
-            cirX = x1
+            if self.point2.y - self.point1.y == 0:
+                cirX = x1
+            else:
+                cirX = x2
             if ((self.point2.y - self.point1.y) == 0) & ((self.point3.y - self.point2.y) == 0):
                 cirY = y1
             elif (self.point2.y - self.point1.y) == 0:
