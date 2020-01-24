@@ -17,10 +17,6 @@ MAGENTA = (255, 0, 255)
 BLACK = (0, 0, 0)
 pygame.init()
 points = []
-for i in range(0, 10):
-    points.append(point(1000,500-i*20 ))
-    points.append(point(500-i*20,750))
-    #points.append(point(numpy.random.normal(1500 / 2, 100), numpy.random.normal(1000 / 2, 100)))
 clock = pygame.time.Clock()
 sc = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 
